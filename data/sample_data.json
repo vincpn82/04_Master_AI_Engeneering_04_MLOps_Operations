@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "text": "I absolutely love MachineInnovators! Their ML platform is a game-changer!",
+    "source": "twitter",
+    "timestamp": "2026-02-22T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "text": "Been using MachineInnovators for 6 months. Pretty solid, no major issues.",
+    "source": "twitter",
+    "timestamp": "2026-02-22T10:15:00Z"
+  },
+  {
+    "id": 3,
+    "text": "Disappointed with the recent update. Lost some important features.",
+    "source": "twitter",
+    "timestamp": "2026-02-22T10:30:00Z"
+  },
+  {
+    "id": 4,
+    "text": "Best investment we made this year! ROI is incredible with MachineInnovators.",
+    "source": "linkedin",
+    "timestamp": "2026-02-22T11:00:00Z"
+  },
+  {
+    "id": 5,
+    "text": "The documentation could be better, but overall it's a decent platform.",
+    "source": "reddit",
+    "timestamp": "2026-02-22T11:30:00Z"
+  },
+  {
+    "id": 6,
+    "text": "Terrible customer support! Waiting 3 days for a response is unacceptable.",
+    "source": "twitter",
+    "timestamp": "2026-02-22T12:00:00Z"
+  },
+  {
+    "id": 7,
+    "text": "Just deployed our first production model with MachineInnovators. Smooth process!",
+    "source": "twitter",
+    "timestamp": "2026-02-22T12:30:00Z"
+  },
+  {
+    "id": 8,
+    "text": "Not impressed. There are better alternatives out there.",
+    "source": "reddit",
+    "timestamp": "2026-02-22T13:00:00Z"
+  },
+  {
+    "id": 9,
+    "text": "MachineInnovators team is always helpful and responsive. Great experience!",
+    "source": "linkedin",
+    "timestamp": "2026-02-22T13:30:00Z"
+  },
+  {
+    "id": 10,
+    "text": "The platform works but it's nothing extraordinary. Average at best.",
+    "source": "twitter",
+    "timestamp": "2026-02-22T14:00:00Z"
+  }
+]

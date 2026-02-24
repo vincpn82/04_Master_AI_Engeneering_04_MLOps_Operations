@@ -1,0 +1,48 @@
+name: Model Monitoring
+
+on:
+  # Esegui ogni giorno alle 2:00 UTC
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # Permetti esecuzione manuale
+  workflow_dispatch:
+  
+  # Esegui ad ogni push su main
+  push:
+    branches: [ main ]
+
+jobs:
+  monitor:
+    name: Monitor Model Performance
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run monitoring script
+      run: |
+        python monitoring/monitoring.py
+    
+    - name: Upload monitoring reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: monitoring-reports-${{ github.run_number }}
+        path: monitoring/reports/
+        retention-days: 90
+    
+    - name: Check for performance degradation
+      run: |
+        echo "Controllando le metriche del modello..."
+        # Qui si potrebbero aggiungere controlli automatici e notifiche

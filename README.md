@@ -1,0 +1,304 @@
+# 🏢 MachineInnovators - Sentiment Analysis MLOps
+
+## 📊 Monitoraggio della Reputazione Online
+
+![MLOps](https://img.shields.io/badge/MLOps-Sentiment%20Analysis-blue)
+![Python](https://img.shields.io/badge/Python-3.10+-green)
+![FastAPI](https://img.shields.io/badge/FastAPI-Framework-teal)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-Transformers-yellow)
+
+Soluzione end-to-end di MLOps per l'analisi del sentiment sui social media, finalizzata al monitoraggio della reputazione online di **MachineInnovators Inc.**
+
+Repository GitHub: https://github.com/vincpn82/04_Master_AI_Engeneering_04_MLOps_Operations.git
+
+---
+
+## 🎯 Obiettivi del Progetto
+
+- **Automazione dell'Analisi del Sentiment**: Classificazione automatica dei sentiment in positivo, neutrale o negativo  
+- **Monitoraggio Continuo**: Sistema di monitoraggio continuo per valutare l'andamento del sentiment nel tempo
+- **Pipeline CI/CD Automatizzata**: Testing e deployment automatico
+- **Retraining del Modello**: Sistema per mantenere alta l'accuratezza predittiva del modello
+
+---
+
+## 🚀 Caratteristiche Principali
+
+- ✅ **API RESTful con FastAPI**: Endpoint per inferenza in tempo reale e batch processing
+- ✅ **Modello Pre-addestrato**: Utilizzo di `cardiffnlp/twitter-roberta-base-sentiment-latest`
+- ✅ **Containerizzazione Docker**: Ambiente isolato e riproducibile
+- ✅ **CI/CD con GitHub Actions**: Pipeline automatizzata per testing e deployment
+- ✅ **Monitoraggio Continuo**: Valutazione automatica delle performance del modello
+- ✅ **Deploy su HuggingFace Spaces**: (Opzionale) Interfaccia web con Gradio
+
+---
+
+## 📂 Struttura del Progetto
+
+```
+sentiment-analysis-mlops/
+├── .github/
+│   └── workflows/
+│       ├── ci-cd.yml              # Pipeline CI/CD principale
+│       └── monitoring.yml         # Monitoraggio automatico
+├── app/
+│   ├── __init__.py
+│   ├── main.py                    # Applicazione FastAPI
+│   ├── model.py                   # Logica del modello
+│   └── schema.py                  # Schemi Pydantic
+├── tests/
+│   ├── __init__.py
+│   ├── test_model.py              # Test del modello
+│   └── test_api.py                # Test dell'API
+├── monitoring/
+│   ├── monitoring.py              # Script monitoraggio
+│   └── reports/                   # Report generati
+├── data/
+│   └── sample_data.json           # Dati di esempio
+├── Dockerfile                     # Container configuration
+├── .dockerignore                  # File esclusi dal container
+├── requirements.txt               # Dipendenze Python
+├── app.py                         # App Gradio (HuggingFace)
+├── .gitignore                     # File esclusi da Git
+└── README.md                      # Documentazione completa
+```
+
+---
+
+## 🛠️ Installazione e Utilizzo
+
+### Prerequisiti
+
+- Python 3.10+
+- Docker (opzionale)
+- Git
+
+### Setup Locale
+
+```bash
+# Clone il repository
+git clone https://github.com/vincpn82/04_Master_AI_Engeneering_04_MLOps_Operations.git
+cd sentiment-analysis-mlops
+
+# Crea ambiente virtuale
+python -m venv venv
+source venv/bin/activate  # Su Windows: venv\Scripts\activate
+
+# Installa le dipendenze
+pip install -r requirements.txt
+```
+
+### Avvio dell'API
+
+```bash
+# Avvio con uvicorn
+uvicorn app.main:app --reload
+
+# Oppure con Docker
+docker build -t sentiment-api .
+docker run -p 8000:8000 sentiment-api
+```
+
+L'API sarà disponibile su `http://localhost:8000`
+
+- 📝 Documentazione interattiva (Swagger): `http://localhost:8000/docs`  
+- 📚 Documentazione alternativa (ReDoc): `http://localhost:8000/redoc`
+
+---
+
+## 🔌 API Endpoints
+
+### 1. Health Check
+
+```bash
+GET /health
+```
+
+### 2. Predizione Singola
+
+```bash
+POST /predict
+Content-Type: application/json
+
+{
+  "text": "I love this product!"
+}
+```
+
+**Response:**
+```json
+{
+  "text": "I love this product!",
+  "sentiment": "positive",
+  "confidence": 0.99
+}
+```
+
+### 3. Predizione Batch
+
+```bash
+POST /predict/batch
+Content-Type: application/json
+
+{
+  "texts": [
+    "Great service!",
+    "Not satisfied.",
+    "It's okay."
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "results": [
+    {"text": "Great service!", "sentiment": "positive", "confidence": 0.99},
+    {"text": "Not satisfied.", "sentiment": "negative", "confidence": 0.97},
+    {"text": "It's okay.", "sentiment": "neutral", "confidence": 0.85}
+  ],
+  "total": 3
+}
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Esegui tutti i test
+pytest tests/ -v
+
+# Test del modello
+pytest tests/test_model.py -v
+
+# Test dell'API
+pytest tests/test_api.py -v
+
+# Test con coverage
+pytest tests/ --cov=app --cov-report=html
+```
+
+---
+
+## 📊 Monitoraggio
+
+Il sistema di monitoraggio valuta automaticamente le performance del modello:
+
+```bash
+# Esegui il monitoraggio manualmente
+python monitoring/monitoring.py
+```
+
+I report vengono salvati in `monitoring/reports/` e includono:
+
+- ✅ Metriche di performance (accuracy, precision, recall, F1-score)
+- ✅ Matrice di confusione
+- ✅ Report di classificazione dettagliato
+- ✅ Predizioni complete per analisi
+
+---
+
+## 🐳 Docker
+
+### Build dell'immagine
+
+```bash
+docker build -t sentiment-analysis .
+```
+
+### Run del container
+
+```bash
+docker run -p 8000:8000 sentiment-analysis
+```
+
+---
+
+## 🔄 CI/CD Pipeline
+
+Le GitHub Actions automatizzano:
+
+1. **Testing**: Esecuzione automatica dei test ad ogni push
+2. **Build & Push**: Creazione e pubblicazione dell'immagine Docker (solo su branch `main`)
+3. **Deploy**: Deploy automatico su HuggingFace Spaces (opzionale)
+4. **Monitoring**: Valutazione giornaliera delle performance del modello (schedulata alle 02:00 UTC)
+
+### Secrets necessari
+
+- `DOCKER_USERNAME`: Username Docker Hub
+- `DOCKER_PASSWORD`: Password Docker Hub
+- `HF_TOKEN`: Token HuggingFace (opzionale)
+- `HF_SPACE_NAME`: Nome dello Space HuggingFace (opzionale)
+
+---
+
+## 📈 Metriche e Performance
+
+Il modello viene valutato su:
+
+- **Accuracy**: Precisione complessiva
+- **Precision**: Precisione per classe
+- **Recall**: Richiamo per classe
+- **F1-Score**: Media armonica di precision e recall
+
+**Soglia di alert**: Accuracy < 0.70
+
+---
+
+## 🤝 Contribuire
+
+Contributi, issues e feature requests sono benvenuti!
+
+1. Fork del progetto
+2. Crea il tuo feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit delle modifiche (`git commit -m 'Add some AmazingFeature'`)
+4. Push al branch (`git push origin feature/AmazingFeature`)
+5. Apri una Pull Request
+
+---
+
+## 📝 Licenza
+
+Questo progetto è distribuito sotto licenza MIT.
+
+---
+
+## 👥 Autori
+
+**MachineInnovators Inc.**
+- Leader nello sviluppo di applicazioni ML scalabili
+- Focus su MLOps e deployment in produzione
+- 📧 Email: info@machineinnovators.com
+- 🌐 Website: www.machineinnovators.com
+
+**Progetto sviluppato come parte del Master in AI Engineering - Profession AI (Febbraio 2026)**
+
+---
+
+## 📚 Riferimenti e Risorse
+
+- [HuggingFace Transformers](https://huggingface.co/transformers/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Docker Documentation](https://docs.docker.com/)
+- [GitHub Actions](https://docs.github.com/en/actions)
+- [Pytest Documentation](https://docs.pytest.org/)
+
+---
+
+## 🏆 Benefici per il Business
+
+- ✅ **Efficienza Operativa**: Riduzione del 99.7% del tempo di analisi
+- ✅ **Scalabilità**: Gestione di grandi volumi di dati dai social media
+- ✅ **Affidabilità**: Testing automatico e monitoraggio continuo
+- ✅ **Manutenibilità**: Pipeline CI/CD per aggiornamenti seamless
+
+---
+
+<div align="center">
+
+⭐ **Se questo progetto ti è stato utile, lascia una stella su GitHub!** ⭐
+
+*Made with ❤️ by MachineInnovators Inc.*
+
+</div>
