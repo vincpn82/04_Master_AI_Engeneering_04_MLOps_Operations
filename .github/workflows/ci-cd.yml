@@ -65,7 +65,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install datasets scikit-learn  # Per il monitoraggio
     
     - name: Run model validation
       run: |
