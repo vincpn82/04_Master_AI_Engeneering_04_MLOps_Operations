@@ -87,12 +87,15 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     
     - name: Push to HuggingFace Space
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
       run: |
         git config --global user.email "ci@machineinnovators.com"
         git config --global user.name "CI Bot"
-        git remote add hf https://huggingface.co/spaces/${{ secrets.HF_SPACE_NAME }}
+        git remote add hf https://USER:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE_NAME
         git push hf main --force
