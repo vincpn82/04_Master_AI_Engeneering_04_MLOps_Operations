@@ -3,8 +3,9 @@ title: MachineInnovators Sentiment Analysis
 emoji: 🏢
 colorFrom: blue
 colorTo: green
-sdk: docker
-app_port: 7860
+sdk: gradio
+sdk_version: 4.44.0
+app_file: app.py
 pinned: false
 ---
 
@@ -36,10 +37,10 @@ Repository GitHub: https://github.com/vincpn82/04_Master_AI_Engeneering_04_MLOps
 
 - ✅ **API RESTful con FastAPI**: Endpoint per inferenza in tempo reale e batch processing
 - ✅ **Modello Pre-addestrato**: Utilizzo di `cardiffnlp/twitter-roberta-base-sentiment-latest`
+- ✅ **Interfaccia Gradio**: Interfaccia web interattiva deployata su HuggingFace Spaces
 - ✅ **Containerizzazione Docker**: Ambiente isolato e riproducibile
 - ✅ **CI/CD con GitHub Actions**: Pipeline automatizzata per testing e deployment
 - ✅ **Monitoraggio Continuo**: Valutazione automatica delle performance del modello
-- ✅ **Deploy su HuggingFace Spaces**: (Opzionale) Interfaccia web con Gradio
 
 ---
 
@@ -87,12 +88,14 @@ sentiment-analysis-mlops/
 
 ```bash
 # Clone il repository
-git clone https://github.com/vincpn82/04_Master_AI_Engeneering_04_MLOps_Operations.git
+git clone https://github.com/vincpn82/AI_Engeneering_04_MLOps_Operations.git
 cd sentiment-analysis-mlops
 
 # Crea ambiente virtuale
 python -m venv venv
-source venv/bin/activate  # Su Windows: venv\Scripts\activate
+source:
+ - unix: venv/bin/activate  
+ - Windows: venv\Scripts\activate
 
 # Installa le dipendenze
 pip install -r requirements.txt
@@ -209,6 +212,36 @@ I report vengono salvati in `monitoring/reports/` e includono:
 
 ---
 
+## 🎨 Interfaccia Gradio su HuggingFace Spaces
+
+Il progetto include un'interfaccia web interattiva costruita con Gradio e deployata automaticamente su HuggingFace Spaces.
+
+### Caratteristiche dell'Interfaccia
+
+- 🎯 **Analisi in Tempo Reale**: Inserisci un testo e ottieni immediatamente il sentiment
+- 📝 **Esempi Pre-caricati**: Esempi di testi per testare rapidamente il modello
+- 😊 **Risultati Visualizzati**: Sentiment mostrato con emoji e percentuale di confidenza
+- 🎨 **Design Moderno**: Tema Soft di Gradio per un'esperienza utente ottimale
+
+### Esecuzione Locale dell'App Gradio
+
+```bash
+# Avvia l'interfaccia Gradio
+python app.py
+```
+
+L'interfaccia sarà disponibile su `http://localhost:7860`
+
+### Deploy Automatico
+
+Ad ogni push sul branch `main`, la pipeline CI/CD:
+1. Esegue tutti i test
+2. Valida le performance del modello
+3. Effettua il push automatico su HuggingFace Spaces
+4. L'app Gradio viene automaticamente deployata e resa pubblica
+
+---
+
 ## 🐳 Docker
 
 ### Build dell'immagine
@@ -231,15 +264,13 @@ Le GitHub Actions automatizzano:
 
 1. **Testing**: Esecuzione automatica dei test ad ogni push
 2. **Build & Push**: Creazione e pubblicazione dell'immagine Docker (solo su branch `main`)
-3. **Deploy**: Deploy automatico su HuggingFace Spaces (opzionale)
+3. **Deploy**: Deploy automatico su HuggingFace Spaces
 4. **Monitoring**: Valutazione giornaliera delle performance del modello (schedulata alle 02:00 UTC)
 
 ### Secrets necessari
 
-- `DOCKER_USERNAME`: Username Docker Hub
-- `DOCKER_PASSWORD`: Password Docker Hub
-- `HF_TOKEN`: Token HuggingFace (opzionale)
-- `HF_SPACE_NAME`: Nome dello Space HuggingFace (opzionale)
+- `HF_TOKEN`: Token HuggingFace
+- `HF_SPACE_NAME`: Nome dello Space HuggingFace
 
 ---
 
@@ -253,62 +284,3 @@ Il modello viene valutato su:
 - **F1-Score**: Media armonica di precision e recall
 
 **Soglia di alert**: Accuracy < 0.70
-
----
-
-## 🤝 Contribuire
-
-Contributi, issues e feature requests sono benvenuti!
-
-1. Fork del progetto
-2. Crea il tuo feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit delle modifiche (`git commit -m 'Add some AmazingFeature'`)
-4. Push al branch (`git push origin feature/AmazingFeature`)
-5. Apri una Pull Request
-
----
-
-## 📝 Licenza
-
-Questo progetto è distribuito sotto licenza MIT.
-
----
-
-## 👥 Autori
-
-**MachineInnovators Inc.**
-- Leader nello sviluppo di applicazioni ML scalabili
-- Focus su MLOps e deployment in produzione
-- 📧 Email: info@machineinnovators.com
-- 🌐 Website: www.machineinnovators.com
-
-**Progetto sviluppato come parte del Master in AI Engineering - Profession AI (Febbraio 2026)**
-
----
-
-## 📚 Riferimenti e Risorse
-
-- [HuggingFace Transformers](https://huggingface.co/transformers/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Docker Documentation](https://docs.docker.com/)
-- [GitHub Actions](https://docs.github.com/en/actions)
-- [Pytest Documentation](https://docs.pytest.org/)
-
----
-
-## 🏆 Benefici per il Business
-
-- ✅ **Efficienza Operativa**: Riduzione del 99.7% del tempo di analisi
-- ✅ **Scalabilità**: Gestione di grandi volumi di dati dai social media
-- ✅ **Affidabilità**: Testing automatico e monitoraggio continuo
-- ✅ **Manutenibilità**: Pipeline CI/CD per aggiornamenti seamless
-
----
-
-<div align="center">
-
-⭐ **Se questo progetto ti è stato utile, lascia una stella su GitHub!** ⭐
-
-*Made with ❤️ by MachineInnovators Inc.*
-
-</div>

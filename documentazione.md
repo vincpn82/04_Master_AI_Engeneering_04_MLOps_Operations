@@ -95,11 +95,9 @@ Classification Head (Linear + Softmax)
 
 #### Metriche del Modello (Benchmark)
 
-| Dataset | Accuracy | F1-Score | Note |
-|---------|----------|----------|------|
-| TweetEval | 0.720 | 0.710 | Dataset di tweet reali |
-| SST-2 | 0.945 | 0.945 | Stanford Sentiment Treebank |
-| IMDB | 0.950 | 0.950 | Movie reviews |
+| Dataset   | Accuracy | F1-Score | Note                   |
+|---------  |----------|----------|------------------------|
+| TweetEval | 0.720    | 0.710    | Dataset di tweet reali |
 
 ### ✅ Cosa viene fatto
 
@@ -112,19 +110,9 @@ Classification Head (Linear + Softmax)
 ### 🏗️ Design Pattern
 
 **Singleton Pattern** per il caricamento del modello:
-- Il modello viene caricato una sola volta in memoria (occupa ~500MB)
+- Il modello viene caricato una sola volta in memoria
 - Tutte le richieste utilizzano la stessa istanza
 - Ottimizza RAM e tempo di inizializzazione
-
-### 📊 Performance Attese
-
-| Operazione | CPU | GPU (CUDA) |
-|-----------|-----|-----------|
-| Predizione singola | 50-100ms | 5-10ms |
-| Batch 10 testi | 200-300ms | 20-30ms |
-| Batch 100 testi | 2-3s | 100-200ms |
-
-**Speedup con batch processing**: 5-10x più veloce rispetto a predizioni singole sequential
 
 ### 📚 Concetti Chiave
 
@@ -156,28 +144,28 @@ Organizzare il codice in una struttura professionale per un progetto MLOps produ
 ```
 sentiment-analysis-mlops/
 ├── .github/
-│   └── workflows/              # GitHub Actions (CI/CD)
+│   └── workflows/             # GitHub Actions (CI/CD)
 │       ├── ci-cd.yml          # Pipeline principale: test, build, deploy
 │       └── monitoring.yml     # Monitoraggio automatico schedulato
 ├── app/
-│   ├── __init__.py           # Package marker
-│   ├── main.py               # Applicazione FastAPI
-│   ├── model.py              # Logica del modello (SentimentAnalyzer)
-│   └── schema.py             # Schemi Pydantic (validazione I/O)
+│   ├── __init__.py            # Package marker
+│   ├── main.py                # Applicazione FastAPI
+│   ├── model.py               # Logica del modello (SentimentAnalyzer)
+│   └── schema.py              # Schemi Pydantic (validazione I/O)
 ├── tests/
 │   ├── __init__.py
-│   ├── test_model.py         # Test unitari del modello
-│   └── test_api.py           # Test integration API
+│   ├── test_model.py          # Test unitari del modello
+│   └── test_api.py            # Test integration API
 ├── monitoring/
-│   ├── monitoring.py         # Script di monitoraggio performance
-│   └── reports/              # Report generati (metriche, grafici)
+│   ├── monitoring.py          # Script di monitoraggio performance
+│   └── reports/               # Report generati (metriche, grafici)
 ├── data/
-│   └── sample_data.json      # Dati di esempio per testing
-├── Dockerfile                # Containerizzazione
-├── requirements.txt          # Dipendenze Python
-├── app.py                    # App Gradio (HuggingFace Spaces)
-├── .gitignore               # File da escludere da Git
-└── README.md                # Documentazione completa
+│   └── sample_data.json       # Dati di esempio per testing
+├── Dockerfile                 # Containerizzazione
+├── requirements.txt           # Dipendenze Python
+├── app.py                     # App Gradio (HuggingFace Spaces)
+├── .gitignore                 # File da escludere da Git
+└── README.md                  # Documentazione completa
 ```
 
 ### ✅ Cosa viene fatto
@@ -199,19 +187,6 @@ sentiment-analysis-mlops/
    - Struttura compatibile con GitHub Actions
    - File YAML per workflow automatici
 
-### 📚 Concetti Chiave
-
-- **Separation of Concerns**: Ogni file ha uno scopo ben definito
-- **DRY Principle** (Don't Repeat Yourself): Codice riutilizzabile
-- **Package Structure**: Organizzazione standard Python
-- **Configuration Management**: Centralizzazione delle configurazioni
-
-### 🔗 Link di Approfondimento
-
-- [Python Package Structure](https://packaging.python.org/tutorials/packaging-projects/)
-- [Project Structure Best Practices](https://docs.python-guide.org/writing/structure/)
-- [.gitignore templates](https://github.com/github/gitignore)
-
 ---
 
 ## STEP 4: Sviluppo API REST con FastAPI
@@ -231,12 +206,12 @@ Creare un'API RESTful production-ready per esporre il modello di sentiment analy
 
 ### 📡 Endpoint Implementati
 
-| Endpoint | Metodo | Descrizione | Input | Output |
-|----------|--------|-------------|-------|--------|
-| `/` | GET | Root con info API | - | Messaggio benvenuto |
-| `/health` | GET | Health check | - | Status + info modello |
-| `/predict` | POST | Predizione singola | Testo | Sentiment + confidence |
-| `/predict/batch` | POST | Predizione batch | Lista testi | Lista sentiment |
+| Endpoint          | Metodo | Descrizione        | Input       | Output                 |
+|-------------------|--------|--------------------|-------------|------------------------|
+| `/`               | GET    | Root con info API  | -           | Messaggio benvenuto    |
+| `/health`         | GET    | Health check       | -           | Status + info modello  |
+| `/predict`        | POST   | Predizione singola | Testo       | Sentiment + confidence |
+| `/predict/batch`  | POST   | Predizione batch   | Lista testi | Lista sentiment        |
 
 ### ✅ Cosa viene fatto
 
@@ -253,21 +228,6 @@ Creare un'API RESTful production-ready per esporre il modello di sentiment analy
 3. **Integrazione modello**:
    - Singleton pattern per efficienza
    - Gestione errori robusta
-
-### 📚 Concetti Chiave
-
-- **REST API**: Architectural style per web services
-- **CORS**: Cross-Origin Resource Sharing per sicurezza
-- **Pydantic**: Data validation usando Python type annotations
-- **OpenAPI**: Specifica standard per documentazione API
-- **HTTP Status Codes**: 200 (OK), 400 (Bad Request), 500 (Server Error)
-
-### 🔗 Link di Approfondimento
-
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [REST API Best Practices](https://restfulapi.net/)
-- [Pydantic Documentation](https://docs.pydantic.dev/)
-- [OpenAPI Specification](https://swagger.io/specification/)
 
 ---
 
@@ -303,20 +263,6 @@ Garantire affidabilità e qualità del codice attraverso testing automatico comp
 - **Obiettivo**: >80% code coverage
 - **Critico**: 100% coverage per funzioni core
 
-### 📚 Concetti Chiave
-
-- **TDD** (Test-Driven Development): Scrivere test prima del codice
-- **Mocking**: Simulare dipendenze esterne
-- **Fixtures**: Setup riutilizzabile per test
-- **Assertions**: Verifiche automatiche dei risultati
-- **Code Coverage**: Percentuale di codice testato
-
-### 🔗 Link di Approfondimento
-
-- [Pytest Documentation](https://docs.pytest.org/)
-- [Testing FastAPI](https://fastapi.tiangolo.com/tutorial/testing/)
-- [TDD Best Practices](https://testdriven.io/blog/modern-tdd/)
-
 ---
 
 ## STEP 6: Containerizzazione con Docker
@@ -348,19 +294,6 @@ Creare un container Docker per garantire riproducibilità e facilitare deploymen
    - Non-root user
    - Health checks
    - Logs a stdout
-
-### 📚 Concetti Chiave
-
-- **Container vs VM**: Container condividono kernel, VM no
-- **Image Layers**: Sistema a layer per efficienza
-- **Docker Hub**: Registry pubblico per immagini
-- **Multi-stage builds**: Riduce dimensione finale immagine
-
-### 🔗 Link di Approfondimento
-
-- [Docker Get Started](https://docs.docker.com/get-started/)
-- [Dockerfile Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
-- [Docker for Python](https://docs.docker.com/language/python/)
 
 ---
 
@@ -398,20 +331,6 @@ Push to Docker Hub
     ↓
 Deploy (optional)
 ```
-
-### 📚 Concetti Chiave
-
-- **GitHub Actions**: Piattaforma CI/CD integrata in GitHub
-- **Workflow**: File YAML che definisce pipeline
-- **Runners**: Server che eseguono i job
-- **Secrets**: Gestione sicura di credenziali
-- **Artifacts**: Output persistenti (report, build)
-
-### 🔗 Link di Approfondimento
-
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [CI/CD Best Practices](https://about.gitlab.com/topics/ci-cd/)
-- [YAML Syntax](https://yaml.org/spec/1.2.2/)
 
 ---
 
@@ -452,19 +371,6 @@ Implementare monitoraggio continuo delle performance del modello per rilevare da
 3. **Alerting** (opzionale):
    - Notifiche se accuracy < threshold
    - Email/Slack per anomalie
-
-### 📚 Concetti Chiave
-
-- **Model Drift**: Degradation delle performance nel tempo
-- **Data Drift**: Cambiamento nella distribuzione dei dati
-- **Concept Drift**: Cambiamento nella relazione input-output
-- **Monitoring vs Observability**: Monitoraggio reattivo vs comprensione proattiva
-
-### 🔗 Link di Approfondimento
-
-- [MLOps Monitoring](https://ml-ops.org/content/three-levels-of-ml-software)
-- [Evidently AI](https://www.evidentlyai.com/)
-- [Model Monitoring Best Practices](https://christophergs.com/machine%20learning/2020/03/14/how-to-monitor-machine-learning-models/)
 
 ---
 
@@ -508,66 +414,3 @@ Piattaforma per hostare demo ML gratuitamente:
    - Badge status CI/CD
    - Quick start guide
    - Architecture diagram
-   - Screenshots
-
-### 📚 Concetti Chiave
-
-- **Documentation as Code**: Documentazione versionata con il codice
-- **API Documentation**: OpenAPI/Swagger per API REST
-- **Demo Applications**: Importanza di demo interattive per adoption
-- **Markdown**: Linguaggio di markup per documentazione
-
-### 🔗 Link di Approfondimento
-
-- [HuggingFace Spaces](https://huggingface.co/spaces)
-- [Gradio Documentation](https://gradio.app/docs/)
-- [Writing Great Documentation](https://documentation.divio.com/)
-- [Markdown Guide](https://www.markdownguide.org/)
-
----
-
-## Link di Approfondimento
-
-### MLOps e Best Practices
-
-- [MLOps.org](https://ml-ops.org/) - Guida completa a MLOps
-- [Google Cloud MLOps](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning)
-- [AWS MLOps](https://aws.amazon.com/sagemaker/mlops/)
-- [Made With ML](https://madewithml.com/) - Corso completo MLOps
-
-### Machine Learning e NLP
-
-- [HuggingFace Course](https://huggingface.co/course) - Corso gratuito su Transformers
-- [Fast.ai](https://www.fast.ai/) - Deep Learning for Coders
-- [Papers With Code](https://paperswithcode.com/) - Paper ML con implementazioni
-- [Stanford CS224N](https://web.stanford.edu/class/cs224n/) - NLP con Deep Learning
-
-### DevOps e CI/CD
-
-- [The DevOps Handbook](https://itrevolution.com/product/the-devops-handbook-second-edition/)
-- [GitLab CI/CD Documentation](https://docs.gitlab.com/ee/ci/)
-- [Jenkins Documentation](https://www.jenkins.io/doc/)
-
-### Python e Software Engineering
-
-- [Real Python](https://realpython.com/) - Tutorial Python avanzati
-- [Python Design Patterns](https://refactoring.guru/design-patterns/python)
-- [Clean Code in Python](https://github.com/zedr/clean-code-python)
-
-### Monitoring e Observability
-
-- [Prometheus](https://prometheus.io/) - Monitoring system
-- [Grafana](https://grafana.com/) - Visualization platform
-- [OpenTelemetry](https://opentelemetry.io/) - Observability framework
-
-### Community e Risorse
-
-- [Kaggle](https://www.kaggle.com/) - Competizioni ML e dataset
-- [Reddit r/MachineLearning](https://www.reddit.com/r/MachineLearning/)
-- [MLOps Community](https://mlops.community/)
-- [AI Stack Exchange](https://ai.stackexchange.com/)
-
----
-
-**Ultimo aggiornamento**: Febbraio 2026  
-**Autore**: Progetto Finale MLOps - Profession AI Master
