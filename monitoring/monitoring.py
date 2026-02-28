@@ -22,7 +22,7 @@ from datasets import load_dataset
 def load_test_data():
     """Carica il dataset di test TweetEval."""
     print("📥 Caricamento dataset TweetEval...")
-    dataset = load_dataset("tweet_eval", "sentiment")
+    dataset = load_dataset("cardiffnlp/tweet_eval", "sentiment")
     test_data = dataset["test"]
     
     # Converti il dataset

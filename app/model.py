@@ -57,12 +57,16 @@ Supportiamo DUE modalità:
 Internamente: predict() chiama predict_batch([text])[0] per riuso codice.
 """
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+from transformers import logging as transformers_logging
 import torch
 from typing import Dict, List
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Suppress model loading warnings about unexpected keys
+transformers_logging.set_verbosity_error()
 
 
 class SentimentAnalyzer:
