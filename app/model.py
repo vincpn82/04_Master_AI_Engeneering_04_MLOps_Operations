@@ -11,7 +11,6 @@ Teoricamente basterebbe usare direttamente:
 Ma in PRODUZIONE abbiamo bisogno di:
 
 1. SINGLETON PATTERN - Performance Critica
-   - Il modello pesa ~500MB in RAM
    - Senza wrapper: ogni import ricarica il modello → spreco di memoria
    - Con wrapper: get_model() carica UNA sola volta
    - Risparmio: in un'app con 10 endpoint, risparmi 4.5GB di RAM
@@ -61,6 +60,7 @@ from transformers import logging as transformers_logging
 import torch
 from typing import Dict, List
 import logging
+import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -111,6 +111,50 @@ class SentimentAnalyzer:
         
         logger.info(f"✅ SentimentAnalyzer pronto! Device: {'GPU' if self.device == 0 else 'CPU'}")
     
+    @staticmethod
+    def preprocess_text(text: str) -> str:
+        """
+        Utilizzo regex:
+           Le regex sono pattern di ricerca potentissimi per manipolare testo. Sono come un "linguaggio di ricerca avanzato" per trovare e sostituire pattern complessi.
+        
+        Preprocessing del testo per migliorare la qualità delle predizioni.
+        
+        Ottimizzazioni:
+        - Rimuove URL (spesso neutri/irrilevanti per sentiment)
+        - Normalizza menzioni Twitter (@username → @user)
+        - Normalizza spazi multipli
+        - Rimuove caratteri di controllo
+        - Limita emoji ripetuti (!!!!! → !!)
+        
+        Args:
+            text: Testo grezzo da preprocessare
+            
+        Returns:
+            Testo pulito e normalizzato
+        """
+        if not text or not isinstance(text, str):
+            return ""
+        
+        # Rimuove URL (http, https, www)
+        text = re.sub(r'http\S+|www\S+', '', text)
+        
+        # Normalizza menzioni Twitter
+        text = re.sub(r'@\w+', '@user', text)
+        
+        # Limita ripetizioni di punteggiatura (!!!!! → !!)
+        text = re.sub(r'([!?.]){3,}', r'\1\1', text)
+        
+        # Rimuove caratteri di controllo e newline multipli
+        text = re.sub(r'[\r\n\t]+', ' ', text)
+        
+        # Normalizza spazi multipli
+        text = re.sub(r'\s+', ' ', text)
+        
+        # Trim spazi iniziali e finali
+        text = text.strip()
+        
+        return text
+    
     def predict(self, text: str) -> Dict[str, any]:
         """
         Predice il sentiment di un singolo testo.
@@ -131,7 +175,7 @@ class SentimentAnalyzer:
         """
         return self.predict_batch([text])[0]
     
-    def predict_batch(self, texts: List[str]) -> List[Dict[str, any]]:
+    def predict_batch(self, texts: List[str], preprocess: bool = True) -> List[Dict[str, any]]:
         """
         Predice il sentiment di una lista di testi (batch processing).
         
@@ -143,6 +187,7 @@ class SentimentAnalyzer:
         
         Args:
             texts: Lista di testi da analizzare
+            preprocess: Se True, applica preprocessing ai testi (default: True)
             
         Returns:
             Lista di dizionari con: text, sentiment, confidence
@@ -156,16 +201,40 @@ class SentimentAnalyzer:
                 {"text": "Okay", "sentiment": "neutral", "confidence": 0.85}
             ]
         """
-        results = self.pipeline(texts)
+        # Applica preprocessing se richiesto
+        if preprocess:
+            processed_texts = [self.preprocess_text(text) for text in texts]
+            # Filtra testi vuoti dopo preprocessing
+            valid_texts = [(i, text) for i, text in enumerate(processed_texts) if text]
+            if not valid_texts:
+                return [{"text": text, "sentiment": "neutral", "confidence": 0.0} for text in texts]
+            
+            indices, texts_to_process = zip(*valid_texts)
+            results = self.pipeline(list(texts_to_process))
+        else:
+            results = self.pipeline(texts)
+            indices = range(len(texts))
         
-        return [
-            {
-                "text": text,
-                "sentiment": result['label'],
-                "confidence": float(result['score'])
-            }
-            for text, result in zip(texts, results)
-        ]
+        # Costruisci risultati finali
+        output = []
+        result_idx = 0
+        for i, original_text in enumerate(texts):
+            if preprocess and i not in indices:
+                # Testo vuoto dopo preprocessing
+                output.append({
+                    "text": original_text,
+                    "sentiment": "neutral",
+                    "confidence": 0.0
+                })
+            else:
+                output.append({
+                    "text": original_text,
+                    "sentiment": results[result_idx]['label'],
+                    "confidence": float(results[result_idx]['score'])
+                })
+                result_idx += 1
+        
+        return output
     
     def get_info(self) -> Dict[str, any]:
         """

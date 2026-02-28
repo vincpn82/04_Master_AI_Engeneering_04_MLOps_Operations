@@ -72,3 +72,5 @@ logs/
 monitoring/reports/*.png
 monitoring/reports/*.html
 !monitoring/reports/.gitkeep
+monitoring/reports/*.txt
+monitoring/reports/*.csv
