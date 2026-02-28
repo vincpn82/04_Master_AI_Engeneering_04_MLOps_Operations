@@ -115,4 +115,4 @@ jobs:
         git config user.name "CI Bot"
         git add .
         git commit -m "Deploy from GitHub Actions"
-        git push --force https://USER:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE_NAME main
+        git push --force https://hf:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE_NAME main
