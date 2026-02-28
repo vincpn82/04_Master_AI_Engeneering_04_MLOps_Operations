@@ -68,6 +68,9 @@ logger = logging.getLogger(__name__)
 # Suppress model loading warnings about unexpected keys
 transformers_logging.set_verbosity_error()
 
+# Suppress HTTP request logs from httpx (used by HuggingFace Hub)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+
 
 class SentimentAnalyzer:
     """
