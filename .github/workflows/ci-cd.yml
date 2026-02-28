@@ -91,12 +91,28 @@ jobs:
         fetch-depth: 0
         lfs: true
     
+    - name: Prepare HuggingFace Space files
+      run: |
+        # Crea directory temporanea per HF Space
+        mkdir -p hf_deploy
+        
+        # Copia i file dalla cartella hf_spaces
+        cp hf_spaces/README.md hf_deploy/
+        cp hf_spaces/app.py hf_deploy/
+        cp hf_spaces/requirements.txt hf_deploy/
+        
+        # Copia la cartella app (necessaria per import)
+        cp -r app hf_deploy/
+        
     - name: Push to HuggingFace Space
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
         HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
       run: |
-        git config --global user.email "ci@machineinnovators.com"
-        git config --global user.name "CI Bot"
-        git remote add hf https://USER:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE_NAME || true
-        git push hf main --force
+        cd hf_deploy
+        git init
+        git config user.email "ci@machineinnovators.com"
+        git config user.name "CI Bot"
+        git add .
+        git commit -m "Deploy from GitHub Actions"
+        git push --force https://USER:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE_NAME main

@@ -1,14 +1,3 @@
----
-title: MachineInnovators Sentiment Analysis
-emoji: 🏢
-colorFrom: blue
-colorTo: green
-sdk: gradio
-sdk_version: 4.44.0
-app_file: app.py
-pinned: false
----
-
 # 🏢 MachineInnovators - Sentiment Analysis MLOps
 
 ## 📊 Monitoraggio della Reputazione Online
@@ -66,10 +55,14 @@ sentiment-analysis-mlops/
 │   └── reports/                   # Report generati
 ├── data/
 │   └── sample_data.json           # Dati di esempio
+├── hf_spaces/                     # 🚀 HuggingFace Spaces deployment
+│   ├── README.md                  # Card con metadata YAML per Gradio
+│   ├── app.py                     # App Gradio (importa da ../app/)
+│   └── requirements.txt           # Dipendenze minimal per HF Spaces
 ├── Dockerfile                     # Container configuration
 ├── .dockerignore                  # File esclusi dal container
-├── requirements.txt               # Dipendenze Python
-├── app.py                         # App Gradio (HuggingFace)
+├── requirements.txt               # Dipendenze Python complete
+├── app.py                         # App Gradio locale (test)
 ├── .gitignore                     # File esclusi da Git
 └── README.md                      # Documentazione completa
 ```
@@ -283,4 +276,4 @@ Il modello viene valutato su:
 - **Recall**: Richiamo per classe
 - **F1-Score**: Media armonica di precision e recall
 
-**Soglia di alert**: Accuracy < 0.70
+**Soglia di alert**: Accuracy < 0.69
