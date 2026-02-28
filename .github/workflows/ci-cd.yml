@@ -110,7 +110,7 @@ jobs:
         HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
       run: |
         cd hf_deploy
-        git init
+        git init -b main
         git config user.email "ci@machineinnovators.com"
         git config user.name "CI Bot"
         git add .

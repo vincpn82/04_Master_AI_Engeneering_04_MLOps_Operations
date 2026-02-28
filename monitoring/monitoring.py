@@ -59,12 +59,13 @@ def evaluate_model():
     # Carica i dati di test
     texts, true_labels = load_test_data()
     
-    # Usa 1200 campioni per statistica più robusta (aumentato da 500)
-    num_samples = min(1200, len(texts))
+    # Usa il 30% del dataset per una valutazione rappresentativa
+    test_percentage = 0.30
+    num_samples = int(len(texts) * test_percentage)
     texts = texts[:num_samples]
     true_labels = true_labels[:num_samples]
     
-    print(f"📊 Valutazione su {len(texts)} campioni...")
+    print(f"📊 Valutazione su {len(texts)} campioni ({test_percentage*100:.0f}% del dataset)...")
     print("⚡ Utilizzo batch processing per performance ottimali...")
     
     # OTTIMIZZAZIONE: Batch processing invece di predizioni singole
