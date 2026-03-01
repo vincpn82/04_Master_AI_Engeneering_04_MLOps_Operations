@@ -152,8 +152,8 @@ def evaluate_model():
     print(f"\n✅ Report salvati in: {report_dir}")
     
     # Controlla se c'è degradazione
-    # Soglia abbassata a 0.69 per riflettere la performance reale del modello
-    alert_threshold = 0.69
+    # Soglia di alert per performance del modello
+    alert_threshold = 0.7
     if accuracy < alert_threshold:
         print(f"\n⚠️  ALERT: L'accuracy ({accuracy:.4f}) è sotto la soglia ({alert_threshold})!")
         print("    Considera il retraining del modello.")

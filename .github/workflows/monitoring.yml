@@ -3,7 +3,7 @@ name: Model Monitoring
 on:
   # Esegui ogni giorno alle 2:00 UTC
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 2 * * *' 
   
   # Permetti esecuzione manuale
   workflow_dispatch:
@@ -61,7 +61,7 @@ jobs:
         df = pd.read_csv(reports[-1])
         accuracy = df['accuracy'].iloc[0]
         f1_score = df['f1_score'].iloc[0]
-        threshold = 0.69
+        threshold = 0.7
         
         print(f'📊 Accuracy: {accuracy:.4f}')
         print(f'📊 F1-Score: {f1_score:.4f}')
@@ -76,7 +76,7 @@ jobs:
                 print('❌ Performance sotto soglia - verrà creato un issue')
             else:
                 f.write(f'DEGRADED=false\n')
-                print('✅ Performance accettabile')
+                print('✅ Performance ok')
         "
     
     - name: Create issue if degraded
@@ -93,14 +93,7 @@ jobs:
                   `### 📊 Metriche Rilevate\n` +
                   `- **Accuracy**: ${process.env.ACCURACY}\n` +
                   `- **F1-Score**: ${process.env.F1_SCORE}\n` +
-                  `- **Soglia minima**: 0.69\n\n` +
+                  `- **Soglia minima**: 0.7\n\n` +
                   `### 🔗 Riferimenti\n` +
                   `- **Run**: [#${context.runNumber}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})\n` +
-                  `- **Timestamp**: ${new Date().toISOString()}\n\n` +
-                  `### 🛠️ Azioni Consigliate\n` +
-                  `- [ ] Analizza i report di monitoraggio\n` +
-                  `- [ ] Verifica la distribuzione dei dati\n` +
-                  `- [ ] Considera il retraining del modello\n` +
-                  `- [ ] Valuta il fine-tuning con dati recenti`,
-            labels: ['model-monitoring', 'alert', 'performance']
-          });
+                  `- **Timestamp**: ${new Date().toISOString()}\n\n`

@@ -276,4 +276,4 @@ Il modello viene valutato su:
 - **Recall**: Richiamo per classe
 - **F1-Score**: Media armonica di precision e recall
 
-**Soglia di alert**: Accuracy < 0.69
+**Soglia di alert**: Accuracy < 0.7
