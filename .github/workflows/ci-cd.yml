@@ -100,6 +100,7 @@ jobs:
         cp hf_spaces/README.md hf_deploy/
         cp hf_spaces/app.py hf_deploy/
         cp hf_spaces/requirements.txt hf_deploy/
+        cp hf_spaces/runtime.txt hf_deploy/
         
         # Copia la cartella app (necessaria per import)
         cp -r app hf_deploy/
