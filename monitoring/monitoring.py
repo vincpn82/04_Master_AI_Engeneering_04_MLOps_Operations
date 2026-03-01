@@ -155,8 +155,12 @@ def evaluate_model():
     # Soglia di alert per performance del modello
     alert_threshold = 0.7
     if accuracy < alert_threshold:
-        print(f"\n⚠️  ALERT: L'accuracy ({accuracy:.4f}) è sotto la soglia ({alert_threshold})!")
+        print(f"\n❌ VALIDATION FAILED: L'accuracy ({accuracy:.4f}) è sotto la soglia ({alert_threshold})!")
+        print("    Il modello NON è idoneo per il deployment.")
         print("    Considera il retraining del modello.")
+        sys.exit(1)  # Termina con errore per bloccare la CI/CD
+    
+    print(f"\n✅ VALIDATION PASSED: Tutte le metriche sono sopra la soglia ({alert_threshold})")
     
     return {
         "accuracy": accuracy,

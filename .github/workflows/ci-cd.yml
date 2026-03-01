@@ -67,8 +67,11 @@ jobs:
         pip install -r requirements.txt
     
     - name: Run model validation
+      id: validation
       run: |
+        echo "🔍 Validating model performance..."
         python monitoring/monitoring.py
+        echo "✅ Model validation passed successfully"
     
     - name: Upload validation reports
       uses: actions/upload-artifact@v4
@@ -77,6 +80,12 @@ jobs:
         name: validation-reports
         path: monitoring/reports/
         retention-days: 30
+    
+    - name: Fail if validation failed
+      if: failure()
+      run: |
+        echo "❌ Model validation failed - deployment blocked"
+        exit 1
 
   deploy-to-huggingface:
     name: Deploy to HuggingFace Spaces (Gradio)
