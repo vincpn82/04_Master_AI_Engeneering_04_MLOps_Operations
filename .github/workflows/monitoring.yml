@@ -61,7 +61,7 @@ jobs:
         df = pd.read_csv(reports[-1])
         accuracy = df['accuracy'].iloc[0]
         f1_score = df['f1_score'].iloc[0]
-        threshold = 0.7
+        threshold = 0.95        
         
         print(f'📊 Accuracy: {accuracy:.4f}')
         print(f'📊 F1-Score: {f1_score:.4f}')
